@@ -40,6 +40,10 @@ function App() {
 
   const [theme, setTheme] = useState("light");
 
+  const toggleTheme = event => {
+    setTheme(event.target.value);
+  };
+
   function incrementAge() {
     setUser((prevUser) => ({ ...prevUser, age: prevUser.age + 1 }));
   }
@@ -69,10 +73,8 @@ function App() {
   return (
     <div className={"App " + theme}>
       <select
-        onChange={(event) => {
-          console.log(event);
-          setTheme(event.target.value);
-        }}
+        onChange={toggleTheme}
+        //onChnage{event => setTheme(event.target.value)}
       >
         <option value="light"> Light </option>
         <option value="dark"> Dark </option>

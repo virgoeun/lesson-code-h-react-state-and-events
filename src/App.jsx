@@ -1,6 +1,8 @@
 import Counter from "./components/Counter";
 import { useState } from "react";
 import WeatherWidget from "./components/WeatherWidget";
+import ChangeCountries from "./components/Countries";
+import AgeCounter from "./components/Age";
 
 //console.log(useState(0))
 // => deconstructuring with ARRAY: let(const => when the value stays the same) [count, setCount] = useState(0)
@@ -9,30 +11,34 @@ import WeatherWidget from "./components/WeatherWidget";
 //never useState outside the event (then react keeps randering without stopping)
 
 function App() {
-  let [count, setCount] = useState(0);
+  // let [count, setCount] = useState(0);
+
   const [username, setUsername] = useState("");
   // const [user, setUser] = useState(userObject)
-  const [user, setUser] = useState({
-    name: "Bob",
-    age: 17,
-    city: "Berlin",
-  });
+  // const [user, setUser] = useState({
+  //   name: "Bob",
+  //   age: 17,
+  //   city: "Berlin",
+  // });
 
   const country = ["Germany", "Korea", "England"];
   const [countries, setCountries] = useState(country);
 
-  function changeCountry() {
-    setCountries((prevCountries) => {
-      return ["Italy", ...prevCountries];
-      // return [ ...prevCountries, "Italy"]; gonna push to the end (like array methods)
+  const addCountries = () => {
+    setCountries([...countries, "Italy"]);
+    console.log(countries);
+  };
 
-      // setCountries((prevCountries) => {
-      //  const newCountries = prevCountries; // because it's immutable so you gotta create a new array(copy) like this
-      //  newCountries.push("Italy")
-      //  return newCountries;
-      //  })
-    });
-  }
+  // setCountries((prevCountries) => {
+  //   return [...prevCountries, "Italy"];
+  // return [ ...prevCountries, "Italy"]; gonna push to the end (like array methods)
+
+  //PUSH method (more complicated)
+  // setCountries((prevCountries) => {
+  //  const newCountries = prevCountries; // because it's immutable so you gotta create a new array(copy) like this
+  //  newCountries.push("Italy")
+  //  return newCountries;
+  // });
 
   // this will cause infinite loop :
   // setCount(count - 1);
@@ -40,22 +46,22 @@ function App() {
 
   const [theme, setTheme] = useState("light");
 
-  const toggleTheme = event => {
+  const toggleTheme = (event) => {
     setTheme(event.target.value);
   };
 
-  function incrementAge() {
-    setUser((prevUser) => ({ ...prevUser, age: prevUser.age + 1 }));
-  }
+  // function incrementAge() {
+  //   setUser((prevUser) => ({ ...prevUser, age: prevUser.age + 1 }));
+  // }
 
-  function handleIncrement() {
-    setCount(count + 1);
-  }
+  // function handleIncrement() {
+  //   setCount(count + 1);
+  // }
 
-  function handleDecrement() {
-    if (count === 0) return;
-    setCount(count - 1);
-  }
+  // function handleDecrement() {
+  //   if (count === 0) return;
+  //   setCount(count - 1);
+  // }
 
   //increment -3 at one time (due to setCount's asynchronous)
 
@@ -72,29 +78,27 @@ function App() {
 
   return (
     <div className={"App " + theme}>
-      <select
-        onChange={toggleTheme}
-        //onChnage{event => setTheme(event.target.value)}
-      >
+      <select onChange={toggleTheme}>
         <option value="light"> Light </option>
         <option value="dark"> Dark </option>
       </select>
-      <button onClick={handleIncrement}>Increment</button>
+      <Counter />
+      {/* <button onClick={handleIncrement}>Increment</button>
       <button onClick={handleDecrement}>decrement</button>
-      {count}
+      {count} */}
       <input
         onChange={(event) => {
-          console.log(event)
-          console.log(event.target.value)
-          setUsername(event.target.value)}}
+          console.log(event);
+          console.log(event.target.value);
+          setUsername(event.target.value);
+        }}
         type="text"
       />
       {/* {username} */}
 
-      <button onClick={incrementAge}>Age</button>
-      <button onClick={changeCountry}>update Country</button>
-      {JSON.stringify(user)}
-      {user.age}
+      <AgeCounter />
+      <ChangeCountries addCountries={addCountries} />
+      {/* <button onClick={changeCountry}>update Country</button> */}
       {JSON.stringify(countries)}
     </div>
   );
